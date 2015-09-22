@@ -11,7 +11,7 @@ namespace Log4Mongo
 {
 	public class MongoDBAppender : AppenderSkeleton
 	{
-		private readonly List<MongoAppenderFileld> _fields = new List<MongoAppenderFileld>();
+		private readonly List<MongoAppenderField> _fields = new List<MongoAppenderField>();
 
 		/// <summary>
 		/// MongoDB database connection in the format:
@@ -70,28 +70,27 @@ namespace Log4Mongo
 
 		#endregion
 
-		public void AddField(MongoAppenderFileld fileld)
+		public void AddField(MongoAppenderField fileld)
 		{
 			_fields.Add(fileld);
 		}
 
-		protected override void Append(LoggingEvent loggingEvent)
+		protected override async void Append(LoggingEvent loggingEvent)
 		{
 			var collection = GetCollection();
-			collection.Insert(BuildBsonDocument(loggingEvent));
+			await collection.InsertOneAsync(BuildBsonDocument(loggingEvent));
 		}
 
-		protected override void Append(LoggingEvent[] loggingEvents)
+		protected override async void Append(LoggingEvent[] loggingEvents)
 		{
 			var collection = GetCollection();
-			collection.InsertBatch(loggingEvents.Select(BuildBsonDocument));
+			await collection.InsertManyAsync(loggingEvents.Select(BuildBsonDocument));
 		}
 
-		private MongoCollection GetCollection()
+		private IMongoCollection<BsonDocument> GetCollection()
 		{
 			var db = GetDatabase();
-            var collection = db.GetCollection(CollectionName ?? "logs", null);
-			//MongoCollection collection = db.GetCollection(CollectionName ?? "logs");
+			IMongoCollection<BsonDocument> collection = db.GetCollection<BsonDocument>(CollectionName ?? "logs");
 			return collection;
 		}
 
@@ -105,21 +104,14 @@ namespace Log4Mongo
 		{
 			string connStr = GetConnectionString();
 
-			/*if (string.IsNullOrWhiteSpace(connStr))
+			if (string.IsNullOrWhiteSpace(connStr))
 			{
-				return BackwardCompatibility.GetDatabase(this);
-			}*/
+				throw new InvalidOperationException("Must provide a valid connection string");
+			}
 
 			MongoUrl url = MongoUrl.Create(connStr);
-
-			// DONE
-            // TODO Should be replaced with MongoClient, but this will change default for WriteConcern.
-			// See http://blog.mongodb.org/post/36666163412/introducing-mongoclient
-			// and http://docs.mongodb.org/manual/release-notes/drivers-write-concern
-			//MongoServer conn = MongoServer.Create(url);
-			MongoClient conn = new MongoClient(url);
-
-			var db = conn.GetDatabase(url.DatabaseName ?? "log4net");
+			MongoClient client = new MongoClient(url);
+			IMongoDatabase db = client.GetDatabase(url.DatabaseName ?? "log4net");
 			return db;
 		}
 
@@ -130,7 +122,7 @@ namespace Log4Mongo
 				return BackwardCompatibility.BuildBsonDocument(log);
 			}
 			var doc = new BsonDocument();
-			foreach(MongoAppenderFileld field in _fields)
+			foreach(MongoAppenderField field in _fields)
 			{
 				object value = field.Layout.Format(log);
 				var bsonValue = value as BsonValue ?? BsonValue.Create(value);

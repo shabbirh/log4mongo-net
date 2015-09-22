@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Log4Mongo.Tests</RootNamespace>
     <AssemblyName>Log4Mongo.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -34,8 +34,8 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    <Reference Include="log4net-await, Version=1.2.13.16, Culture=neutral, PublicKeyToken=e354e8e9cc12b9b4, processorArchitecture=MSIL">
+      <HintPath>..\..\lib\log4net-await.1.2.13.16\lib\net40\log4net-await.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="MongoDB.Bson, Version=2.0.1.27, Culture=neutral, processorArchitecture=MSIL">
@@ -50,22 +50,16 @@
       <HintPath>..\packages\MongoDB.Driver.Core.2.0.1\lib\net45\MongoDB.Driver.Core.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="MongoDB.Driver.Legacy, Version=2.0.1.27, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\mongocsharpdriver.2.0.1\lib\net45\MongoDB.Driver.Legacy.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
+      <HintPath>..\..\lib\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="SharpTestsEx, Version=1.2.1.0, Culture=neutral, PublicKeyToken=8c60d8070630b1c1, processorArchitecture=MSIL">
-      <HintPath>..\packages\SharpTestsEx.1.2.1\lib\SharpTestsEx.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="SharpTestsEx">
+      <HintPath>..\..\lib\SharpTestsEx.1.1.1\lib\SharpTestsEx.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
@@ -78,7 +72,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Log4Mongo\Log4Mongo.csproj">
-      <Project>{59d8ecf9-2867-43fd-bf18-efe2758cf14f}</Project>
+      <Project>{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}</Project>
       <Name>Log4Mongo</Name>
     </ProjectReference>
   </ItemGroup>
