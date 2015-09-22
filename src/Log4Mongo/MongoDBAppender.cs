@@ -111,7 +111,7 @@ namespace Log4Mongo
 
 			MongoUrl url = MongoUrl.Create(connStr);
 			MongoClient client = new MongoClient(url);
-			IMongoDatabase db = client.GetDatabase(url.DatabaseName ?? "log4net");
+			IMongoDatabase db = client.GetDatabase(url.DatabaseName ?? "logStore");
 			return db;
 		}
 
