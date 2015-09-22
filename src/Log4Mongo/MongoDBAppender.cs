@@ -35,36 +35,36 @@ namespace Log4Mongo
 
 		#region Deprecated
 
-        /// <summary>
-        /// Hostname of MongoDB server
+		/// <summary>
+		/// Hostname of MongoDB server
 		/// Defaults to localhost
-        /// </summary>
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
 		public string Host { get; set; }
 
-        /// <summary>
-        /// Port of MongoDB server
+		/// <summary>
+		/// Port of MongoDB server
 		/// Defaults to 27017
-        /// </summary>
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
 		public int Port { get; set; }
 
-        /// <summary>
-        /// Name of the database on MongoDB
+		/// <summary>
+		/// Name of the database on MongoDB
 		/// Defaults to log4net_mongodb
-        /// </summary>
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
 		public string DatabaseName { get; set; }
 
-        /// <summary>
-        /// MongoDB database user name
-        /// </summary>
+		/// <summary>
+		/// MongoDB database user name
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
-        public string UserName { get; set; }
+		public string UserName { get; set; }
 
-        /// <summary>
-        /// MongoDB database password
-        /// </summary>
+		/// <summary>
+		/// MongoDB database password
+		/// </summary>
 		[Obsolete("Use ConnectionString")]
 		public string Password { get; set; }
 
@@ -90,7 +90,8 @@ namespace Log4Mongo
 		private MongoCollection GetCollection()
 		{
 			var db = GetDatabase();
-			MongoCollection collection = db.GetCollection(CollectionName ?? "logs");
+            var collection = db.GetCollection(CollectionName ?? "logs", null);
+			//MongoCollection collection = db.GetCollection(CollectionName ?? "logs");
 			return collection;
 		}
 
@@ -100,23 +101,25 @@ namespace Log4Mongo
 			return connectionStringSetting != null ? connectionStringSetting.ConnectionString : ConnectionString;
 		}
 
-		private MongoDatabase GetDatabase()
+		private IMongoDatabase GetDatabase()
 		{
 			string connStr = GetConnectionString();
 
-			if (string.IsNullOrWhiteSpace(connStr))
+			/*if (string.IsNullOrWhiteSpace(connStr))
 			{
 				return BackwardCompatibility.GetDatabase(this);
-			}
+			}*/
 
 			MongoUrl url = MongoUrl.Create(connStr);
 
-			// TODO Should be replaced with MongoClient, but this will change default for WriteConcern.
+			// DONE
+            // TODO Should be replaced with MongoClient, but this will change default for WriteConcern.
 			// See http://blog.mongodb.org/post/36666163412/introducing-mongoclient
 			// and http://docs.mongodb.org/manual/release-notes/drivers-write-concern
-			MongoServer conn = MongoServer.Create(url);
+			//MongoServer conn = MongoServer.Create(url);
+			MongoClient conn = new MongoClient(url);
 
-			MongoDatabase db = conn.GetDatabase(url.DatabaseName ?? "log4net");
+			var db = conn.GetDatabase(url.DatabaseName ?? "log4net");
 			return db;
 		}
 

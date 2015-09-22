@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4Mongo", "Log4Mongo\Log4Mongo.csproj", "{59D8ECF9-2867-43FD-BF18-EFE2758CF14F}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Log4Mongo.Tests", "Log4Mongo.Tests\Log4Mongo.Tests.csproj", "{69DD514D-D096-4279-BA9D-4331EE4A6DE2}"
@@ -28,5 +30,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(CodealikeProperties) = postSolution
+		SolutionGuid = 06808781-7bb3-4fc0-9569-9d2d9f265ab3
 	EndGlobalSection
 EndGlobal
