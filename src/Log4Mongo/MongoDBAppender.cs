@@ -9,7 +9,10 @@ using log4net.Core;
 
 namespace Log4Mongo
 {
-	public class MongoDBAppender : AppenderSkeleton
+    /// <summary>
+    /// MongoDb Appender for Log4Net
+    /// </summary>
+    public class MongoDBAppender : AppenderSkeleton
 	{
 		private readonly List<MongoAppenderField> _fields = new List<MongoAppenderField>();
 
@@ -68,39 +71,64 @@ namespace Log4Mongo
 		[Obsolete("Use ConnectionString")]
 		public string Password { get; set; }
 
-		#endregion
+        #endregion
 
-		public void AddField(MongoAppenderField fileld)
+        /// <summary>
+        /// Adds the field.
+        /// </summary>
+        /// <param name="fileld">The fileld.</param>
+        public void AddField(MongoAppenderField fileld)
 		{
 			_fields.Add(fileld);
 		}
 
-		protected override async void Append(LoggingEvent loggingEvent)
+        /// <summary>
+        /// Appends the specified logging event.
+        /// </summary>
+        /// <param name="loggingEvent">The logging event.</param>
+        protected override async void Append(LoggingEvent loggingEvent)
 		{
 			var collection = GetCollection();
 			await collection.InsertOneAsync(BuildBsonDocument(loggingEvent));
 		}
 
-		protected override async void Append(LoggingEvent[] loggingEvents)
+        /// <summary>
+        /// Appends the specified logging events.
+        /// </summary>
+        /// <param name="loggingEvents">The logging events.</param>
+        protected override async void Append(LoggingEvent[] loggingEvents)
 		{
 			var collection = GetCollection();
 			await collection.InsertManyAsync(loggingEvents.Select(BuildBsonDocument));
 		}
 
-		private IMongoCollection<BsonDocument> GetCollection()
+        /// <summary>
+        /// Gets the collection.
+        /// </summary>
+        /// <returns></returns>
+        private IMongoCollection<BsonDocument> GetCollection()
 		{
 			var db = GetDatabase();
 			IMongoCollection<BsonDocument> collection = db.GetCollection<BsonDocument>(CollectionName ?? "logs");
 			return collection;
 		}
 
-		private string GetConnectionString()
+        /// <summary>
+        /// Gets the connection string.
+        /// </summary>
+        /// <returns></returns>
+        private string GetConnectionString()
 		{
 			ConnectionStringSettings connectionStringSetting = ConfigurationManager.ConnectionStrings[ConnectionStringName];
 			return connectionStringSetting != null ? connectionStringSetting.ConnectionString : ConnectionString;
 		}
 
-		private IMongoDatabase GetDatabase()
+        /// <summary>
+        /// Gets the database.
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Must provide a valid connection string</exception>
+        private IMongoDatabase GetDatabase()
 		{
 			string connStr = GetConnectionString();
 
@@ -115,7 +143,12 @@ namespace Log4Mongo
 			return db;
 		}
 
-		private BsonDocument BuildBsonDocument(LoggingEvent log)
+        /// <summary>
+        /// Builds the bson document.
+        /// </summary>
+        /// <param name="log">The log.</param>
+        /// <returns></returns>
+        private BsonDocument BuildBsonDocument(LoggingEvent log)
 		{
 			if(_fields.Count == 0)
 			{

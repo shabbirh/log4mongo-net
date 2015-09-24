@@ -2,9 +2,24 @@
 
 namespace Log4Mongo
 {
-	public class MongoAppenderField
+    /// <summary>
+    /// Mongo Appender Field
+    /// </summary>
+    public class MongoAppenderField
 	{
-		public string Name { get; set; }
-		public IRawLayout Layout { get; set; }
+        /// <summary>
+        /// Gets or sets the name.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
+        public string Name { get; set; }
+        /// <summary>
+        /// Gets or sets the layout.
+        /// </summary>
+        /// <value>
+        /// The layout.
+        /// </value>
+        public IRawLayout Layout { get; set; }
 	}
 }

@@ -8,8 +8,16 @@ using log4net.Util;
 
 namespace Log4Mongo
 {
+	/// <summary>
+	/// Backward Compatibility Library
+	/// </summary>
 	public class BackwardCompatibility
 	{
+		/// <summary>
+		/// Builds the bson document.
+		/// </summary>
+		/// <param name="loggingEvent">The logging event.</param>
+		/// <returns></returns>
 		public static BsonDocument BuildBsonDocument(LoggingEvent loggingEvent)
 		{
 			if(loggingEvent == null)
@@ -59,6 +67,11 @@ namespace Log4Mongo
 			return toReturn;
 		}
 
+		/// <summary>
+		/// Builds the exception bson document.
+		/// </summary>
+		/// <param name="ex">The ex.</param>
+		/// <returns></returns>
 		private static BsonDocument BuildExceptionBsonDocument(Exception ex)
 		{
 			var toReturn = new BsonDocument {
